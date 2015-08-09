@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rom/support/class_builder'
 
 describe ROM::ClassBuilder do
   subject(:builder) { ROM::ClassBuilder.new(options) }

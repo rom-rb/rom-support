@@ -1,5 +1,3 @@
-require 'rom/constants'
-
 module ROM
   # Helper module for classes with a constructor accepting option hash
   #
@@ -25,6 +23,9 @@ module ROM
   #
   # @api public
   module Options
+    InvalidOptionValueError = Class.new(StandardError)
+    InvalidOptionKeyError = Class.new(StandardError)
+
     # @return [Hash<Option>] Option definitions
     #
     # @api public

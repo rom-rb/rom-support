@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rom/support/options'
 
 describe ROM::Options do
   let(:klass) do
@@ -36,17 +36,17 @@ describe ROM::Options do
 
     it 'checks option key' do
       expect { klass.new(unexpected: 'foo') }
-        .to raise_error(ROM::InvalidOptionKeyError, /:unexpected/)
+        .to raise_error(ROM::Options::InvalidOptionKeyError, /:unexpected/)
     end
 
     it 'checks option type' do
       expect { klass.new(name: :foo) }
-        .to raise_error(ROM::InvalidOptionValueError, /:foo/)
+        .to raise_error(ROM::Options::InvalidOptionValueError, /:foo/)
     end
 
     it 'checks option value' do
       expect { klass.new(name: 'invalid') }
-        .to raise_error(ROM::InvalidOptionValueError, /invalid/)
+        .to raise_error(ROM::Options::InvalidOptionValueError, /invalid/)
     end
 
     it 'copies klass options to descendant' do

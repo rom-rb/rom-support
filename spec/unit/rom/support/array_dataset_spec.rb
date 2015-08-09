@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'rom/support/array_dataset'
 
 describe ROM::ArrayDataset do

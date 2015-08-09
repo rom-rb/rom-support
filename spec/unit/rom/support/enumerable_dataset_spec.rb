@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'rom/support/enumerable_dataset'
 
 describe ROM::EnumerableDataset do

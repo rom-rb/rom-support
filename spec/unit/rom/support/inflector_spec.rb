@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rom/support/inflector'
 
 describe ROM::Inflector do
   shared_examples 'an inflector' do

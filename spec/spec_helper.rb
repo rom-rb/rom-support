@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 # this is needed for guard to work, not sure why :(
 require "bundler"
 Bundler.setup
@@ -9,8 +7,8 @@ if RUBY_ENGINE == "rbx"
   CodeClimate::TestReporter.start
 end
 
-require 'rom'
-require 'anima'
+require 'rom-support'
+require 'rom-mapper'
 
 begin
   require 'byebug'
@@ -33,10 +31,6 @@ module Test
   end
 end
 
-def T(*args)
-  ROM::Processor::Transproc::Functions[*args]
-end
-
 RSpec.configure do |config|
   config.after do
     Test.remove_constants
@@ -47,4 +41,6 @@ RSpec.configure do |config|
   end
 end
 
-ROM.use :auto_registration
+def T(*args)
+  ROM::Processor::Transproc::Functions[*args]
+end

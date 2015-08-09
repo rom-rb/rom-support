@@ -1,3 +1,5 @@
+require 'rom/support/options'
+
 module ROM
   # Internal support class for generating classes
   #
