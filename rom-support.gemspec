@@ -3,7 +3,7 @@
 require File.expand_path('../lib/rom/support/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.name          = 'rom'
+  gem.name          = 'rom-support'
   gem.summary       = 'Ruby Object Mapper - Support libraries'
   gem.description   = gem.summary
   gem.author        = 'Piotr Solnica'
