@@ -2,7 +2,7 @@ language: ruby
 sudo: false
 cache: bundler
 env:
-  - CODECLIMATE_REPO_TOKEN=TODO
+  - CODECLIMATE_REPO_TOKEN=513a7c6a20ab24a3937cb3a75400c8bba6f86a9405d05241445fdf432c378f77
 bundler_args: --without tools
 script: "bundle exec rake spec"
 rvm:
