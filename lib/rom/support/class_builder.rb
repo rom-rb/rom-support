@@ -8,7 +8,7 @@ module ROM
     include Options
 
     option :name, type: String, reader: true
-    option :parent, type: Class, reader: true, parent: Object
+    option :parent, type: Class, reader: true, default: Object
 
     # Generate a class based on options
     #
