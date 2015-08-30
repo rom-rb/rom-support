@@ -13,7 +13,7 @@ module ROM
     # Generate a class based on options
     #
     # @example
-    #   builder = ROM::ClasBuilder.new(name: 'MyClass')
+    #   builder = ROM::ClassBuilder.new(name: 'MyClass')
     #
     #   klass = builder.call
     #   klass.name # => "MyClass"
