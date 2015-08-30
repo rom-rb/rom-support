@@ -8,12 +8,12 @@ module ROM
     include Options
 
     option :name, type: String, reader: true
-    option :parent, type: Class, reader: true, parent: Object
+    option :parent, type: Class, reader: true, default: Object
 
     # Generate a class based on options
     #
     # @example
-    #   builder = ROM::ClasBuilder.new(name: 'MyClass')
+    #   builder = ROM::ClassBuilder.new(name: 'MyClass')
     #
     #   klass = builder.call
     #   klass.name # => "MyClass"
