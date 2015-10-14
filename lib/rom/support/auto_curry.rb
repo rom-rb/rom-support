@@ -1,5 +1,3 @@
-require 'byebug'
-
 module ROM
   module AutoCurry
     def self.extended(klass)
