@@ -40,7 +40,7 @@ module ROM
     #
     # @api private
     class Option
-      attr_reader :name, :type, :allow, :default
+      attr_reader :name, :type, :allow, :default, :coercer
 
       def initialize(name, options = {})
         @name = name
@@ -48,6 +48,7 @@ module ROM
         @reader = options.fetch(:reader) { false }
         @allow = options.fetch(:allow) { [] }
         @default = options.fetch(:default) { Undefined }
+        @coercer = options.fetch(:coercer) { Undefined }
         @ivar = :"@#{name}" if @reader
       end
 
@@ -65,6 +66,10 @@ module ROM
 
       def default_value(object)
         default.is_a?(Proc) ? default.call(object) : default
+      end
+
+      def coercible?
+        @coercer != Undefined
       end
 
       def type_matches?(value)
@@ -97,6 +102,10 @@ module ROM
         ensure_known_options(options)
 
         each do |name, option|
+          if option.coercible? && options.key?(name)
+            options[name] = option.coercer.call options[name]
+          end
+
           if option.default? && !options.key?(name)
             options[name] = option.default_value(object)
           end
@@ -159,6 +168,7 @@ module ROM
       # @option settings [Boolean] :reader Define a reader? Default: +false+
       # @option settings [Array] :allow Allow certain values. Default: Allow anything
       # @option settings [Object] :default Set default value for missing option
+      # @option settings [Proc] :coercer Set coercer for assigned option
       #
       # @api public
       def option(name, settings = {})
