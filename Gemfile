@@ -33,3 +33,5 @@ group :tools do
     gem 'mutant-rspec'
   end
 end
+
+gem 'transproc', github: 'solnic/transproc'

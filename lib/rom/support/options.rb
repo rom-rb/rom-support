@@ -40,44 +40,59 @@ module ROM
     #
     # @api private
     class Option
-      attr_reader :name, :type, :allow, :default, :coercer
+      attr_reader :name, :reader
 
       def initialize(name, options = {})
-        @name = name
-        @type = options.fetch(:type) { Object }
+        @name   = name
         @reader = options.fetch(:reader) { false }
-        @allow = options.fetch(:allow) { [] }
-        @default = options.fetch(:default) { Undefined }
-        @coercer = options.fetch(:coercer) { Undefined }
-        @ivar = :"@#{name}" if @reader
+        # Prepares transformations applied by [#transform]
+        add_coercer options[:coercer]
+        add_default options[:default] if options.key? :default
+        add_type_checker options[:type]
+        add_value_checker options[:allow]
+        add_reader if reader
       end
 
-      def reader?
-        @reader
+      # Takes options of some object, applies current transformations
+      # and returns updated options
+      #
+      # @param [Object] object
+      # @param [Hash] options
+      #
+      # @return [Hash] options
+      #
+      def transform(object, options)
+        transformers.inject(options) { |a, e| e[object, a] }
       end
 
-      def assign_reader_value(object, value)
-        object.instance_variable_set(@ivar, value)
+      private
+
+      def transformers
+        @transformers ||= []
       end
 
-      def default?
-        @default != Undefined
+      def add_reader
+        transformers << Transformers[:reader_assigner, name]
       end
 
-      def default_value(object)
-        default.is_a?(Proc) ? default.call(object) : default
+      def add_default(value)
+        transformer = value.respond_to?(:call) ? :default_proc : :default_value
+        transformers << Transformers[transformer, name, value]
       end
 
-      def coercible?
-        @coercer != Undefined
+      def add_coercer(fn)
+        return unless fn.is_a?(Proc)
+        transformers << Transformers[:coercer, name, fn]
       end
 
-      def type_matches?(value)
-        value.is_a?(type)
+      def add_type_checker(type)
+        return unless type.is_a?(Class)
+        transformers << Transformers[:type_checker, name, type]
       end
 
-      def allow?(value)
-        allow.empty? || allow.include?(value)
+      def add_value_checker(values)
+        return unless values.respond_to?(:include?)
+        transformers << Transformers[:value_checker, name, values]
       end
     end
 
@@ -100,22 +115,7 @@ module ROM
 
       def process(object, options)
         ensure_known_options(options)
-
-        each do |name, option|
-          if option.coercible? && options.key?(name)
-            options[name] = option.coercer.call options[name]
-          end
-
-          if option.default? && !options.key?(name)
-            options[name] = option.default_value(object)
-          end
-
-          if options.key?(name)
-            validate_option_value(option, name, options[name])
-          end
-
-          option.assign_reader_value(object, options[name]) if option.reader?
-        end
+        each { |_, option| options.update option.transform(object, options) }
       end
 
       def names
@@ -131,21 +131,8 @@ module ROM
       def ensure_known_options(options)
         options.each_key do |name|
           @options.fetch(name) do
-            raise InvalidOptionKeyError,
-              "#{name.inspect} is not a valid option"
+            fail InvalidOptionKeyError, "#{name.inspect} is not a valid option"
           end
-        end
-      end
-
-      def validate_option_value(option, name, value)
-        unless option.type_matches?(value)
-          raise InvalidOptionValueError,
-            "#{name.inspect}:#{value.inspect} has incorrect type"
-        end
-
-        unless option.allow?(value)
-          raise InvalidOptionValueError,
-            "#{name.inspect}:#{value.inspect} has incorrect value"
         end
       end
     end
@@ -174,7 +161,7 @@ module ROM
       def option(name, settings = {})
         option = Option.new(name, settings)
         option_definitions.define(option)
-        attr_reader(name) if option.reader?
+        attr_reader(name) if option.reader
       end
 
       # @api private
@@ -203,6 +190,58 @@ module ROM
       options = args.last ? args.last.dup : {}
       self.class.option_definitions.process(self, options)
       @options = options.freeze
+    end
+
+    # Collection of transformers for options
+    #
+    module Transformers
+      extend Transproc::Registry
+
+      import :identity, from: Transproc::Coercions
+
+      def self.default_value(_, options, name, value)
+        return options if options.key?(name)
+        options.merge(name => value)
+      end
+
+      def self.default_proc(object, options, name, fn)
+        return options if options.key?(name)
+        options.merge(name => fn.call(object))
+      end
+
+      def self.coercer(_, options, name, fn)
+        return options unless options.key?(name)
+        value = options[name]
+        options.merge name => fn[value]
+      end
+
+      def self.type_checker(_, options, name, type)
+        return options unless options.key?(name)
+        value = options[name]
+
+        return options if options[name].is_a?(type)
+        fail(
+          InvalidOptionValueError,
+          "#{name.inspect}:#{value.inspect} has incorrect type" \
+          " (#{type} is expected)"
+        )
+      end
+
+      def self.value_checker(_, options, name, list)
+        return options unless options.key?(name)
+        value = options[name]
+
+        return options if list.include?(options[name])
+        fail(
+          InvalidOptionValueError,
+          "#{name.inspect}:#{value.inspect} has incorrect value."
+        )
+      end
+
+      def self.reader_assigner(object, options, name)
+        object.instance_variable_set(:"@#{name}", options[name])
+        options
+      end
     end
   end
 end
