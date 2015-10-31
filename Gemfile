@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'transproc', github: 'solnic/transproc', branch: 'master'
 gem 'rom-mapper', github: 'rom-rb/rom-mapper', branch: 'master'
 
 group :console do
