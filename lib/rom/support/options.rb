@@ -1,3 +1,5 @@
+require 'transproc'
+
 module ROM
   # Helper module for classes with a constructor accepting option hash
   #
