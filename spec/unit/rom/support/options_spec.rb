@@ -88,6 +88,22 @@ describe ROM::Options do
       expect(object.options).to eql(args: nil)
     end
 
+    it 'coerces assigned values' do
+      klass.option :number, coercer: -> v { v.to_i }
+
+      object = klass.new(number: '1')
+
+      expect(object.options).to eql(number: 1)
+    end
+
+    it 'not coerces default values' do
+      klass.option :number, default: '1', coercer: -> v { v.to_i }
+
+      object = klass.new
+
+      expect(object.options).to eql(number: '1')
+    end
+
     it 'options are frozen' do
       object = klass.new
 
