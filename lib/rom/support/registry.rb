@@ -2,7 +2,7 @@ module ROM
   # @api private
   class Registry
     include Enumerable
-    include Equalizer.new(:elements)
+    include Dry::Equalizer(:elements)
 
     class ElementNotFoundError < KeyError
       def initialize(key, name)

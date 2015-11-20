@@ -33,7 +33,7 @@ module ROM
       klass.class_eval do
         extend ClassMethods
 
-        include Equalizer.new(:data)
+        include Dry::Equalizer(:data)
 
         option :row_proc, reader: true, default: proc { |obj| obj.class.row_proc }
       end
