@@ -1,8 +1,10 @@
-## v0.1.1 to be released
+## v1.0.0 to-be-released
 
 ### Added
 
 * Support for `:coercer` option key (nepalez)
+
+[Compare v0.1.0...HEAD](https://github.com/rom-rb/rom-support/compare/v0.1.0...HEAD)
 
 ## v0.1.0 2015-08-10
 
