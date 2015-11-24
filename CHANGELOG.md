@@ -3,6 +3,7 @@
 ### Added
 
 * Support for `:coercer` option key (nepalez)
+* `AutoCurry#auto_curry_guard` interface (solnic)
 
 [Compare v0.1.0...HEAD](https://github.com/rom-rb/rom-support/compare/v0.1.0...HEAD)
 
