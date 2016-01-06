@@ -9,7 +9,7 @@
 
 * Default value for `:parent` option in `ClassBuilder` is set correctly (michaelherold)
 
-[Compare v0.1.0...HEAD](https://github.com/rom-rb/rom-support/compare/v0.1.0...HEAD)
+[Compare v0.1.0...v1.0.0](https://github.com/rom-rb/rom-support/compare/v0.1.0...v1.0.0)
 
 ## v0.1.0 2015-08-10
 
