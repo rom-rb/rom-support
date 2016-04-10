@@ -15,15 +15,25 @@ describe ROM::Registry do
   end
 
   describe '#fetch' do
+    it 'has an alias to []' do
+      expect(registry.method(:fetch)).to eq(registry.method(:[]))
+    end
+
     it 'returns registered elemented identified by name' do
-      expect(registry[:mars]).to be(mars)
+      expect(registry.fetch(:mars)).to be(mars)
     end
 
     it 'raises error when element is not found' do
-      expect { registry[:twix] }.to raise_error(
+      expect { registry.fetch(:twix) }.to raise_error(
         ROM::Registry::ElementNotFoundError,
         ":twix doesn't exist in Candy registry"
       )
+    end
+
+    it 'returns the value from an optional block when key is not found' do
+      value = registry.fetch(:candy) { :twix }
+
+      expect(value).to eq(:twix)
     end
   end
 
