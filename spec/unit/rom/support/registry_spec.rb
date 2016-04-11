@@ -1,6 +1,25 @@
 require 'spec_helper'
 require 'rom/support/registry'
 
+shared_examples_for 'registry fetch' do
+  it 'returns registered element identified by name' do
+    expect(registry.public_send(fetch_method, :mars)).to be(mars)
+  end
+
+  it 'raises error when element is not found' do
+    expect { registry.public_send(fetch_method, :twix) }.to raise_error(
+      ROM::Registry::ElementNotFoundError,
+      ":twix doesn't exist in Candy registry"
+    )
+  end
+
+  it 'returns the value from an optional block when key is not found' do
+    value = registry.public_send(fetch_method, :candy) { :twix }
+
+    expect(value).to eq(:twix)
+  end
+end
+
 describe ROM::Registry do
   subject(:registry) { registry_class.new(mars: mars) }
 
@@ -15,31 +34,20 @@ describe ROM::Registry do
   end
 
   describe '#fetch' do
-    it 'has an alias to []' do
-      expect(registry.method(:fetch)).to eq(registry.method(:[]))
-    end
+    let(:fetch_method) { :fetch }
 
-    it 'returns registered elemented identified by name' do
-      expect(registry.fetch(:mars)).to be(mars)
-    end
-
-    it 'raises error when element is not found' do
-      expect { registry.fetch(:twix) }.to raise_error(
-        ROM::Registry::ElementNotFoundError,
-        ":twix doesn't exist in Candy registry"
-      )
-    end
-
-    it 'returns the value from an optional block when key is not found' do
-      value = registry.fetch(:candy) { :twix }
-
-      expect(value).to eq(:twix)
-    end
+    it_behaves_like 'registry fetch'
   end
 
-  describe '.element_name' do
-    it 'returns registered elemented identified by element_name' do
-      expect(registry[:mars]).to be(mars)
+  describe '#[]' do
+    let(:fetch_method) { :[] }
+
+    it_behaves_like 'registry fetch'
+  end
+
+  describe '#method_missing' do
+    it 'returns registered element identified by name' do
+      expect(registry.mars).to be(mars)
     end
 
     it 'raises no-method error when element is not there' do
