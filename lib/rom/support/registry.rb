@@ -26,9 +26,14 @@ module ROM
       elements.key?(name)
     end
 
-    def [](key)
-      elements.fetch(key) { raise ElementNotFoundError.new(key, name) }
+    def fetch(key)
+      elements.fetch(key) do
+        return yield if block_given?
+
+        raise ElementNotFoundError.new(key, name)
+      end
     end
+    alias_method :[], :fetch
 
     def respond_to_missing?(name, include_private = false)
       elements.key?(name) || super
