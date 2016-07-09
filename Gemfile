@@ -11,7 +11,7 @@ group :console do
 end
 
 group :test do
-  gem 'activesupport'
+  gem 'activesupport', '~> 4.2'
   gem 'inflecto', '~> 0.0', '>= 0.0.2'
 
   platforms :rbx do
