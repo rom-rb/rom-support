@@ -18,6 +18,10 @@ shared_examples_for 'registry fetch' do
 
     expect(value).to eq(:twix)
   end
+
+  it 'calls #to_sym on a key before fetching' do
+    expect(registry.public_send(fetch_method, double(to_sym: :mars))).to be(mars)
+  end
 end
 
 describe ROM::Registry do

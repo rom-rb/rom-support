@@ -23,11 +23,11 @@ module ROM
     end
 
     def key?(name)
-      elements.key?(name)
+      elements.key?(name.to_sym)
     end
 
     def fetch(key)
-      elements.fetch(key) do
+      elements.fetch(key.to_sym) do
         return yield if block_given?
 
         raise ElementNotFoundError.new(key, name)
