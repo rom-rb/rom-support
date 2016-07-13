@@ -3,7 +3,7 @@ require 'tempfile'
 
 RSpec.describe ROM::Deprecations do
   let(:log_file) do
-    Tempfile.new
+    Tempfile.new('rom_deprecations')
   end
 
   before do
