@@ -19,25 +19,37 @@ module ROM
       @__auto_curry_busy__ ||= false
     end
 
+    def auto_curried_methods
+      @__auto_curried_methods__ ||= []
+    end
+
     def auto_curry(name, &block)
-      curried = self.curried
-      meth = instance_method(name)
-      arity = meth.arity
+      arity = instance_method(name).arity
 
-      define_method(name) do |*args|
-        response =
-          if arity < 0 || arity == args.size
-            meth.bind(self).(*args)
+      return if private_instance_methods.include?(name) || arity == 0
+
+      mod = Module.new
+
+      mod.module_eval do
+        define_method(name) do |*args|
+          response =
+            if arity < 0 || arity == args.size
+              super(*args)
+            else
+              self.class.curried.new(self, name: name, curry_args: args, arity: arity)
+            end
+
+          if block
+            response.instance_exec(&block)
           else
-            curried.new(self, name: name, curry_args: args, arity: arity)
+            response
           end
-
-        if block
-          response.instance_exec(&block)
-        else
-          response
         end
       end
+
+      auto_curried_methods << name
+
+      prepend(mod)
     end
   end
 end

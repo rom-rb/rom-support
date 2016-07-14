@@ -32,6 +32,10 @@ RSpec.describe ROM::AutoCurry do
     end
   end
 
+  it 'registers auto-curried methods' do
+    expect(object.class.auto_curried_methods).to eql(%i[arity_1 arity_2 arity_many])
+  end
+
   it 'auto-curries method with arity == 0' do
     expect(object.arity_0).to be(0)
   end
