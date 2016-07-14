@@ -1,3 +1,16 @@
+## v2.0.0 to-be-released
+
+### Added
+
+* `AutoCurry.auto_curried_methods` returning a list of methods that were auto-curried (solnic)
+
+### Changed
+
+* Refactored `AutoCurry` to use module prepend (solnic)
+* `AutoCurry` skips private methods and methods with 0 arity (solnic)
+
+[Compare v1.0.0...v2.0.0](https://github.com/rom-rb/rom-support/compare/v1.0.0...v2.0.0)
+
 ## v1.0.0 2016-01-06
 
 ### Added
