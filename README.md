@@ -8,7 +8,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/rom-support.svg)][gem]
 [![Build Status](https://travis-ci.org/rom-rb/rom-support.svg?branch=master)][travis]
-[![Dependency Status](https://gemnasium.com/rom-rb/rom-support.png)][gemnasium]
+[![Dependency Status](https://gemnasium.com/rom-rb/rom-support.svg)][gemnasium]
 [![Code Climate](https://codeclimate.com/github/rom-rb/rom-support/badges/gpa.svg)][codeclimate]
 [![Test Coverage](https://codeclimate.com/github/rom-rb/rom-support/badges/coverage.svg)][codeclimate]
 [![Inline docs](http://inch-ci.org/github/rom-rb/rom-support.svg?branch=master)][inchpages]
