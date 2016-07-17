@@ -70,7 +70,7 @@ module ROM
     def self.set_logger!(output = nil)
       @logger = Logger.new(output || $stdout)
       @logger.formatter = proc { |severity, datetime, progname, msg|
-        "[rom] #{msg.dump}\n"
+        "[rom] #{msg}\n"
       }
       @logger
     end
