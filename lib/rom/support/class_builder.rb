@@ -33,6 +33,10 @@ module ROM
           name
         end
 
+        def self.to_str
+          name
+        end
+
         def self.to_s
           name
         end

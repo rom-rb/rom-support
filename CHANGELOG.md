@@ -1,8 +1,10 @@
-## v2.0.0 to-be-released
+## v2.0.0 2016-07-27
 
 ### Added
 
 * `AutoCurry.auto_curried_methods` returning a list of methods that were auto-curried (solnic)
+* `ROM::Cache` extension providing `#fetch_or_store` and `.fetch_or_store` (solnic)
+* `ROM::Deprecations.set_logger!` which allows setting a custom logger (solnic)
 
 ### Changed
 
