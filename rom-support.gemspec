@@ -15,6 +15,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = `git ls-files -- {spec}/*`.split("\n")
   gem.license       = 'MIT'
 
+  gem.add_runtime_dependency 'concurrent-ruby', '~> 1.0'
   gem.add_runtime_dependency 'dry-equalizer', '~> 0.2'
   gem.add_runtime_dependency 'wisper', '~> 1.6', '>= 1.6.0'
   gem.add_runtime_dependency 'transproc', '~> 0.4.0'
