@@ -8,7 +8,6 @@ if RUBY_ENGINE == "rbx"
 end
 
 require 'rom-support'
-require 'rom-mapper'
 
 begin
   require 'byebug'
@@ -39,8 +38,4 @@ RSpec.configure do |config|
   config.around do |example|
     ConstantLeakFinder.find(example)
   end
-end
-
-def T(*args)
-  ROM::Processor::Transproc::Functions[*args]
 end

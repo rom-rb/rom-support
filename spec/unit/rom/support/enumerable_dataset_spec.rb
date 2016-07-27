@@ -6,7 +6,7 @@ describe ROM::EnumerableDataset do
       include ROM::EnumerableDataset
 
       def self.row_proc
-        T(:symbolize_keys)
+        -> i { i.each_with_object({}) { |(k,v),h| h[k.to_sym] = v } }
       end
     end
   end
