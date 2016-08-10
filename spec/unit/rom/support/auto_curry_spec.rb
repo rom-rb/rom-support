@@ -29,6 +29,12 @@ RSpec.describe ROM::AutoCurry do
       def arity_many(*args)
         args
       end
+
+      protected
+
+      def leave_me_alone(foo)
+        foo
+      end
     end
   end
 

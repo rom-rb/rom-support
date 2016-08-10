@@ -26,7 +26,7 @@ module ROM
     def auto_curry(name, &block)
       arity = instance_method(name).arity
 
-      return if private_instance_methods.include?(name) || arity == 0
+      return unless public_instance_methods.include?(name) && arity != 0
 
       mod = Module.new
 
