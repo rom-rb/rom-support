@@ -1,3 +1,11 @@
+## v2.0.1 2016-08-11
+
+### Changed
+
+* `AutoCurry` skips protected methods too (solnic)
+
+[Compare v2.0.0...v2.0.1](https://github.com/rom-rb/rom-support/compare/v2.0.0...v2.0.1)
+
 ## v2.0.0 2016-07-27
 
 ### Added
