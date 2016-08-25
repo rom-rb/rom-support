@@ -27,28 +27,23 @@ module ROM
     #
     # @api private
     def defines(*args)
-      mod = Module.new
-
-      args.each do |name|
-        mod.module_eval <<-RUBY, __FILE__, __LINE__ + 1
-          def #{name}(value = Undefined)
+      mod = Module.new do
+        args.each do |name|
+          define_method(name) do |value = Undefined|
+            ivar = "@#{name}"
             if value == Undefined
-              defined?(@#{name}) && @#{name}
+              defined?(ivar) && instance_variable_get(ivar)
             else
-              @#{name} = value
+              instance_variable_set(ivar, value)
             end
           end
-        RUBY
-      end
-
-      delegates = args.map { |name| "klass.#{name}(#{name})" }.join("\n")
-
-      mod.module_eval <<-RUBY, __FILE__, __LINE__ + 1
-        def inherited(klass)
-          super
-          #{delegates}
         end
-      RUBY
+
+        define_method(:inherited) do |klass|
+          superclass.send(:inherited, klass)
+          args.each { |name| klass.send(name, send(name)) }
+        end
+      end
 
       extend(mod)
     end
