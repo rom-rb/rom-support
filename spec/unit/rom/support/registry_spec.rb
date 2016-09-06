@@ -65,4 +65,22 @@ describe ROM::Registry do
       expect { registry.twix }.to raise_error(NoMethodError)
     end
   end
+
+  describe '#key?' do
+    it 'calls #to_sym on a key before checking if it exists' do
+      expect(registry.key?(fetch_method, double(to_sym: :mars))).to be(mars)
+    end
+
+    it 'returns true for an existing key' do
+      expect(registry.key?(:mars)).to be_truethy
+      end
+
+    it 'returns false for a non-existing key' do
+      expect(registry.key?(:twix)).to be_falsey
+    end
+
+    it 'returns false for a nil key' do
+      expect(registry.key?(nil)).to be_falsey
+    end
+  end
 end
