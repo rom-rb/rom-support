@@ -67,20 +67,23 @@ describe ROM::Registry do
   end
 
   describe '#key?' do
+    let(:mars) { double(to_sym: :mars) }
+
     it 'calls #to_sym on a key before checking if it exists' do
-      expect(registry.key?(fetch_method, double(to_sym: :mars))).to be(mars)
+      allow(mars).to receive(:to_sym)
+      registry.key?(:mars)
     end
 
     it 'returns true for an existing key' do
-      expect(registry.key?(:mars)).to be_truethy
+      expect(registry.key?(:mars)).to eq(true)
       end
 
     it 'returns false for a non-existing key' do
-      expect(registry.key?(:twix)).to be_falsey
+      expect(registry.key?(:twix)).to eq(false)
     end
 
     it 'returns false for a nil key' do
-      expect(registry.key?(nil)).to be_falsey
+      expect(registry.key?(nil)).to eq(false)
     end
   end
 end

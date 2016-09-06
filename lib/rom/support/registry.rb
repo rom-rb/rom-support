@@ -28,7 +28,7 @@ module ROM
     end
 
     def fetch(key)
-      raise ArgumentError.new('key cannot be nil.') if key.nil?
+      raise ArgumentError.new('key cannot be nil') if key.nil?
       elements.fetch(key.to_sym) do
         return yield if block_given?
 
