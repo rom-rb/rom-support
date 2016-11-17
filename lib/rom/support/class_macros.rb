@@ -40,7 +40,7 @@ module ROM
         end
 
         define_method(:inherited) do |klass|
-          superclass.send(:inherited, klass)
+          super(klass)
           args.each { |name| klass.send(name, send(name)) }
         end
       end

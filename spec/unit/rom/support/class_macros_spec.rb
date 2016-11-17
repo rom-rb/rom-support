@@ -44,4 +44,27 @@ RSpec.describe 'Class Macros' do
   it 'allows overwriting of inherited values' do
     expect(OtherClass.two).to eq('two')
   end
+
+  it 'does not change self in .inherited hook' do
+    called = false
+
+    mod = Module.new do
+      define_method(:inherited) do |klass|
+        super(klass)
+
+        called = true
+      end
+    end
+
+    base = Class.new do
+      extend mod
+      extend ROM::ClassMacros
+
+      defines :dummy
+      dummy nil
+    end
+
+    Class.new(base)
+    expect(called).to be true
+  end
 end
