@@ -13,7 +13,6 @@ group :test do
 
   platforms :rbx do
     gem 'rubysl-bigdecimal', platforms: :rbx
-    gem 'codeclimate-test-reporter', require: false
   end
 end
 
