@@ -4,7 +4,7 @@ RSpec.describe 'Class Macros' do
   class MyClass
     extend ROM::ClassMacros
 
-    defines :one, :two, :three
+    defines :one, :two, :three, :four
 
     one 1
     two 2
@@ -66,5 +66,9 @@ RSpec.describe 'Class Macros' do
 
     Class.new(base)
     expect(called).to be true
+  end
+
+  it 'returns nil for undefiend value' do
+    expect(MyClass.four).to be nil
   end
 end
