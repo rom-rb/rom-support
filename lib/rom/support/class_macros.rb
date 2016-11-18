@@ -34,7 +34,11 @@ module ROM
           define_method(name) do |value = UndefinedValue|
             ivar = "@#{name}"
             if value == UndefinedValue
-              instance_variable_defined?(ivar) && instance_variable_get(ivar)
+              if instance_variable_defined?(ivar)
+                instance_variable_get(ivar)
+              else
+                nil
+              end
             else
               instance_variable_set(ivar, value)
             end
