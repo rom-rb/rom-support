@@ -3,6 +3,8 @@ module ROM
   #
   # @private
   module ClassMacros
+    UndefinedValue = Object.new
+
     # Specify what macros a class will use
     #
     # @example
@@ -29,9 +31,9 @@ module ROM
     def defines(*args)
       mod = Module.new do
         args.each do |name|
-          define_method(name) do |value = Undefined|
+          define_method(name) do |value = UndefinedValue|
             ivar = "@#{name}"
-            if value == Undefined
+            if value == UndefinedValue
               if instance_variable_defined?(ivar)
                 instance_variable_get(ivar)
               else
